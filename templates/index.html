@@ -1,0 +1,80 @@
+<head>
+    <title>
+        Tindex
+    </title>
+    <style>
+        /* .frame img{
+            float:left;
+            width: 45%;
+            padding: 1px;
+        }
+        .frame figcaption{
+            text-align:center; 
+            font-style:italic;
+        }
+        .draw img{
+            float:right;
+            width: 45%;
+            padding: 1px;
+        }
+
+        .frame figcaption{
+            text-align:bottom; 
+            font-style:italic;
+        } */
+        .container{
+            display: flex;
+            flex-direction: row;
+            flex-grow: 1;
+        }
+        .photos{
+            display: flex;
+            justify-content: center;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+        .image{
+            display: block;
+            width: 100%;
+        }
+        .word{
+            display: block;
+            width: 100%;
+            text-align: center;
+        }
+    </style>
+    <body>
+        <!-- <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='style/main.css') }}"> -->
+    <h1>Face Detector</h1>
+    <div class="container">
+        <div class="photos">
+            <img class="image" src = "{{url_for('video_feed')}}">
+            <span class = "word">Frames</span>
+        </div>
+        <div class="photos">
+            <!-- <iframe src="detection.html" style="float: inline-end;"></iframe> -->
+            <h3>Counts:</h3><p id="count">Counts</p><br>
+            <h3>Masked:</h3><p id="mask">mask</p>
+        </div>
+    </div>
+    <hr>
+    
+<script>
+    var clock = document.getElementById("mask");
+    setInterval(() => {
+        fetch("{{ url_for('get_mask') }}")
+        .then(response => {
+                response.text().then(t => {clock.innerHTML = t})});
+        }, 1000);  
+</script>
+<script>
+    var count = document.getElementById("count");
+    setInterval(() => {
+    fetch("{{url_for('get_count') }}").then(function(response) {
+    return response.text().then(function(text) {
+    count.innerHTML = text;
+    });
+    });}, 1000); 
+</script>
+</body>
+</head>
